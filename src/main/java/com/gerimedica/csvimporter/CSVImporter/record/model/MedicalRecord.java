@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Entity
@@ -104,5 +105,18 @@ public class MedicalRecord {
 
     public void setSortingPriority(int sortingPriority) {
         this.sortingPriority = sortingPriority;
+    }
+
+    @Override
+    public String toString() {
+        SimpleDateFormat sdff = new SimpleDateFormat("dd-MM-yyyy");
+        return  source + ',' +
+                codeListCode + ',' +
+                code + ',' +
+                displayValue + ',' +
+                longDescription + ',' +
+                (fromDate == null ? null : sdff.format(fromDate)) + ',' +
+                (toDate == null ? null : sdff.format(toDate)) + ',' +
+                sortingPriority;
     }
 }

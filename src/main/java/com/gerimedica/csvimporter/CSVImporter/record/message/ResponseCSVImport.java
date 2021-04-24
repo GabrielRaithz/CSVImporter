@@ -1,4 +1,4 @@
-package com.gerimedica.csvimporter.CSVImporter.message;
+package com.gerimedica.csvimporter.CSVImporter.record.message;
 
 import com.gerimedica.csvimporter.CSVImporter.record.model.MedicalRecord;
 

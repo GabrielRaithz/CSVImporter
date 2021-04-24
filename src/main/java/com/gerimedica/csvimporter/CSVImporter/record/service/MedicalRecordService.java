@@ -1,6 +1,6 @@
 package com.gerimedica.csvimporter.CSVImporter.record.service;
 
-import com.gerimedica.csvimporter.CSVImporter.message.ResponseCSVImport;
+import com.gerimedica.csvimporter.CSVImporter.record.message.ResponseCSVImport;
 import com.gerimedica.csvimporter.CSVImporter.record.exception.FileIsNotCsvException;
 import com.gerimedica.csvimporter.CSVImporter.record.exception.MedicalRecordNotFound;
 import com.gerimedica.csvimporter.CSVImporter.record.helper.HelperCsv;

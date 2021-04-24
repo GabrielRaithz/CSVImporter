@@ -1,6 +1,6 @@
 package com.gerimedica.csvimporter.CSVImporter.record;
 
-import com.gerimedica.csvimporter.CSVImporter.message.ResponseCSVImport;
+import com.gerimedica.csvimporter.CSVImporter.record.message.ResponseCSVImport;
 import com.gerimedica.csvimporter.CSVImporter.record.message.MessageResponse;
 import com.gerimedica.csvimporter.CSVImporter.record.model.MedicalRecord;
 import com.gerimedica.csvimporter.CSVImporter.record.service.MedicalRecordService;

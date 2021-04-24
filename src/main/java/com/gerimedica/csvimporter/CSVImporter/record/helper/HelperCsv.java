@@ -1,6 +1,6 @@
 package com.gerimedica.csvimporter.CSVImporter.record.helper;
 
-import com.gerimedica.csvimporter.CSVImporter.message.ResponseCSVImport;
+import com.gerimedica.csvimporter.CSVImporter.record.message.ResponseCSVImport;
 import com.gerimedica.csvimporter.CSVImporter.record.exception.IncorrectHeaderException;
 import com.gerimedica.csvimporter.CSVImporter.record.model.MedicalRecord;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,7 +17,7 @@ import java.util.*;
 public class HelperCsv {
     private static final String[] headerToBeCompared = {"source", "codeListCode", "code", "displayValue", "longDescription", "fromDate", "toDate", "sortingPriority"};
 
-    public static ResponseCSVImport importCsv(MultipartFile file) throws IOException, ParseException {
+    public static ResponseCSVImport importCsv(MultipartFile file) throws IOException {
         ResponseCSVImport responseCSVImport = new ResponseCSVImport();
 
         BufferedReader bufferedReader = new BufferedReader(
@@ -55,7 +55,7 @@ public class HelperCsv {
 
     private static Date getDate(String dateParam) throws ParseException {
         DateFormat formatNR = new SimpleDateFormat("dd-MM-yyyy");
-        if(dateParam.equals("")) return new Date();
+        if(dateParam.equals("")) return null;
         return formatNR.parse(dateParam);
     }
 
