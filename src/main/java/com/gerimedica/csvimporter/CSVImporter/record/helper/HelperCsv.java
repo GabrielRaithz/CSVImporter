@@ -22,13 +22,13 @@ public class HelperCsv {
 
         BufferedReader bufferedReader = new BufferedReader(
                 new InputStreamReader(file.getInputStream(), StandardCharsets.UTF_8));
-        String[] headerSplitted = bufferedReader.readLine().replace("\"","").split(",", headerToBeCompared.length);
+        String[] headerSplitted = bufferedReader.readLine().split(",", headerToBeCompared.length);
         checkHeader(Arrays.asList(headerSplitted));
         Map<String, Integer> headerIndexes = getHeaderIndex(headerSplitted);
         String line = bufferedReader.readLine();
 
         while (line!=null){
-            String[] splittedLine = line.replace("\"","").split(",", headerToBeCompared.length);
+            String[] splittedLine = line.split(",", headerToBeCompared.length);
             try {
                 MedicalRecord medicalRecord = createMedicalRecord(headerIndexes, splittedLine);
                 responseCSVImport.addImportedLine(medicalRecord);
