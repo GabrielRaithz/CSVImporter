@@ -1,6 +1,7 @@
 package com.gerimedica.csvimporter.CSVImporter.record.model;
 
 import com.sun.istack.NotNull;
+import com.sun.istack.Nullable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -23,16 +24,19 @@ public class MedicalRecord {
     private String codeListCode;
     @NotNull
     private String displayValue;
-    @NotNull
+    @Nullable
     private String longDescription;
+    @Nullable
     private Date fromDate;
+    @Nullable
     private Date toDate;
-    private int sortingPriority;
+    @Nullable
+    private Integer sortingPriority;
 
     public MedicalRecord() {
     }
 
-    public MedicalRecord(Long code, String source, String codeListCode, String displayValue, String longDescription, Date fromDate, Date toDate, int sortingPriority) {
+    public MedicalRecord(Long code, String source, String codeListCode, String displayValue, String longDescription, Date fromDate, Date toDate, Integer sortingPriority) {
         this.code = code;
         this.source = source;
         this.codeListCode = codeListCode;
@@ -99,11 +103,11 @@ public class MedicalRecord {
         this.toDate = toDate;
     }
 
-    public int getSortingPriority() {
+    public Integer getSortingPriority() {
         return sortingPriority;
     }
 
-    public void setSortingPriority(int sortingPriority) {
+    public void setSortingPriority(Integer sortingPriority) {
         this.sortingPriority = sortingPriority;
     }
 

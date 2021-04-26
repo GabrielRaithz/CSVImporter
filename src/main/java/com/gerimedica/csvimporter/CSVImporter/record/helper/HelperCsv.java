@@ -22,17 +22,18 @@ public class HelperCsv {
 
         BufferedReader bufferedReader = new BufferedReader(
                 new InputStreamReader(file.getInputStream(), StandardCharsets.UTF_8));
-        String[] headerSplitted = bufferedReader.readLine().replace("\"","").split(",");
+        String[] headerSplitted = bufferedReader.readLine().replace("\"","").split(",", headerToBeCompared.length);
         checkHeader(Arrays.asList(headerSplitted));
         Map<String, Integer> headerIndexes = getHeaderIndex(headerSplitted);
         String line = bufferedReader.readLine();
 
         while (line!=null){
-            String[] splittedLine = line.replace("\"","").split(",");
+            String[] splittedLine = line.replace("\"","").split(",", headerToBeCompared.length);
             try {
-                responseCSVImport.addImportedLine(createMedicalRecord(headerIndexes, splittedLine));
+                MedicalRecord medicalRecord = createMedicalRecord(headerIndexes, splittedLine);
+                responseCSVImport.addImportedLine(medicalRecord);
             }catch (Exception ex){
-               responseCSVImport.addInvalidLine(line);
+               responseCSVImport.addInvalidLine(line + "reason: " + ex.getMessage());
             }
             line = bufferedReader.readLine();
         }
@@ -49,8 +50,16 @@ public class HelperCsv {
                 splittedLine[headerIndexes.get("longDescription")],
                 getDate(splittedLine[headerIndexes.get("fromDate")]),
                 getDate(splittedLine[headerIndexes.get("toDate")]),
-                Integer.parseInt(splittedLine[headerIndexes.get("sortingPriority")])
+                getSortingPriorityInteger(splittedLine[headerIndexes.get("sortingPriority")])
         );
+    }
+
+    private static Integer getSortingPriorityInteger(String sortingPriority){
+        try{
+            return Integer.parseInt(sortingPriority);
+        } catch (Exception ex){
+            return null;
+        }
     }
 
     private static Date getDate(String dateParam) throws ParseException {
