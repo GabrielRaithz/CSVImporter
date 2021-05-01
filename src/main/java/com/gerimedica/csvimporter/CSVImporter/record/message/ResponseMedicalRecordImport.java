@@ -5,11 +5,11 @@ import com.gerimedica.csvimporter.CSVImporter.record.model.MedicalRecord;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ResponseCSVImport {
+public class ResponseMedicalRecordImport {
     private List<MedicalRecord> importedMedicalRecords;
     private List<String> invalidLines;
 
-    public ResponseCSVImport() {
+    public ResponseMedicalRecordImport() {
         importedMedicalRecords = new ArrayList<>();
         invalidLines = new ArrayList<>();
     }

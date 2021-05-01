@@ -1,7 +1,7 @@
 package com.gerimedica.csvimporter.CSVImporter.record;
 
-import com.gerimedica.csvimporter.CSVImporter.record.message.ResponseCSVImport;
 import com.gerimedica.csvimporter.CSVImporter.record.message.MessageResponse;
+import com.gerimedica.csvimporter.CSVImporter.record.message.ResponseMedicalRecordImport;
 import com.gerimedica.csvimporter.CSVImporter.record.model.MedicalRecord;
 import com.gerimedica.csvimporter.CSVImporter.record.service.MedicalRecordService;
 import org.springframework.http.HttpStatus;
@@ -24,16 +24,16 @@ public class MedicalRecordSource {
     Delete all data     ok
     */
 
-    MedicalRecordService medicalRecordService;
+    final MedicalRecordService medicalRecordService;
 
     public MedicalRecordSource(MedicalRecordService medicalRecordService) {
         this.medicalRecordService = medicalRecordService;
     }
 
     @PostMapping("/csv/import")
-    public ResponseEntity<ResponseCSVImport> importCSV(@RequestParam MultipartFile file) throws IOException, ParseException {
-        ResponseCSVImport responseCSVImport = this.medicalRecordService.uploadData(file);
-        return new ResponseEntity<>(responseCSVImport, HttpStatus.OK);
+    public ResponseEntity<ResponseMedicalRecordImport> importCSV(@RequestParam MultipartFile file) throws IOException, ParseException {
+        ResponseMedicalRecordImport responseMedicalRecordImport = this.medicalRecordService.uploadData(file);
+        return new ResponseEntity<>(responseMedicalRecordImport, HttpStatus.OK);
     }
 
     @GetMapping()

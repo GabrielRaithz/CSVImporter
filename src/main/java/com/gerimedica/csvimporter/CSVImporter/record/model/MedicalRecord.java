@@ -1,5 +1,6 @@
 package com.gerimedica.csvimporter.CSVImporter.record.model;
 
+import com.gerimedica.csvimporter.CSVImporter.record.helper.DataHandler;
 import com.sun.istack.NotNull;
 import com.sun.istack.Nullable;
 
@@ -7,8 +8,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
 
 @Entity
 @Table(name = "medical_record")
@@ -45,6 +48,19 @@ public class MedicalRecord {
         this.fromDate = fromDate;
         this.toDate = toDate;
         this.sortingPriority = sortingPriority;
+    }
+
+    public static MedicalRecord createMedicalRecord(Map<String, Integer> headerIndexes, String[] splittedLine) throws ParseException {
+        return new MedicalRecord(
+                Long.parseLong(splittedLine[headerIndexes.get("code")]),
+                splittedLine[headerIndexes.get("source")],
+                splittedLine[headerIndexes.get("codeListCode")],
+                splittedLine[headerIndexes.get("displayValue")],
+                splittedLine[headerIndexes.get("longDescription")],
+                DataHandler.getDate(splittedLine[headerIndexes.get("fromDate")]),
+                DataHandler.getDate(splittedLine[headerIndexes.get("toDate")]),
+                DataHandler.integerParser(splittedLine[headerIndexes.get("sortingPriority")])
+        );
     }
 
     public String getSource() {

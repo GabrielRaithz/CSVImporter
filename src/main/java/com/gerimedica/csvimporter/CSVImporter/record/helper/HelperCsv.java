@@ -1,71 +1,42 @@
 package com.gerimedica.csvimporter.CSVImporter.record.helper;
 
-import com.gerimedica.csvimporter.CSVImporter.record.message.ResponseCSVImport;
 import com.gerimedica.csvimporter.CSVImporter.record.exception.IncorrectHeaderException;
-import com.gerimedica.csvimporter.CSVImporter.record.model.MedicalRecord;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class HelperCsv {
     private static final String[] headerToBeCompared = {"source", "codeListCode", "code", "displayValue", "longDescription", "fromDate", "toDate", "sortingPriority"};
 
-    public static ResponseCSVImport importCsv(MultipartFile file) throws IOException {
+    public static ResponseCSVImport readCSVFile(MultipartFile file) throws IOException {
         ResponseCSVImport responseCSVImport = new ResponseCSVImport();
+        InputStreamReader inputStreamReader = new InputStreamReader(file.getInputStream(), StandardCharsets.UTF_8);
+        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
 
-        BufferedReader bufferedReader = new BufferedReader(
-                new InputStreamReader(file.getInputStream(), StandardCharsets.UTF_8));
         String[] headerSplitted = bufferedReader.readLine().split(",", headerToBeCompared.length);
         checkHeader(Arrays.asList(headerSplitted));
-        Map<String, Integer> headerIndexes = getHeaderIndex(headerSplitted);
-        String line = bufferedReader.readLine();
 
-        while (line!=null){
-            String[] splittedLine = line.split(",", headerToBeCompared.length);
-            try {
-                MedicalRecord medicalRecord = createMedicalRecord(headerIndexes, splittedLine);
-                responseCSVImport.addImportedLine(medicalRecord);
-            }catch (Exception ex){
-               responseCSVImport.addInvalidLine(line + "reason: " + ex.getMessage());
-            }
-            line = bufferedReader.readLine();
-        }
+        responseCSVImport.setHeaderIndexes(getHeaderIndex(headerSplitted));
+        responseCSVImport.setSplittedLines(getLinesSplitted(bufferedReader));
+
+        inputStreamReader.close();
+        bufferedReader.close();
 
         return responseCSVImport;
     }
 
-    private static MedicalRecord createMedicalRecord(Map<String, Integer> headerIndexes, String[] splittedLine) throws ParseException {
-        return new MedicalRecord(
-                Long.parseLong(splittedLine[headerIndexes.get("code")]),
-                splittedLine[headerIndexes.get("source")],
-                splittedLine[headerIndexes.get("codeListCode")],
-                splittedLine[headerIndexes.get("displayValue")],
-                splittedLine[headerIndexes.get("longDescription")],
-                getDate(splittedLine[headerIndexes.get("fromDate")]),
-                getDate(splittedLine[headerIndexes.get("toDate")]),
-                getSortingPriorityInteger(splittedLine[headerIndexes.get("sortingPriority")])
-        );
-    }
-
-    private static Integer getSortingPriorityInteger(String sortingPriority){
-        try{
-            return Integer.parseInt(sortingPriority);
-        } catch (Exception ex){
-            return null;
+    private static List<String[]> getLinesSplitted(BufferedReader bufferedReader) throws IOException {
+        List<String[]> splittedLines = new ArrayList<>();
+        String line = bufferedReader.readLine();
+        while (line != null){
+            splittedLines.add(line.split(",", headerToBeCompared.length));
+            line = bufferedReader.readLine();
         }
-    }
-
-    private static Date getDate(String dateParam) throws ParseException {
-        DateFormat formatNR = new SimpleDateFormat("dd-MM-yyyy");
-        if(dateParam.equals("")) return null;
-        return formatNR.parse(dateParam);
+        return splittedLines;
     }
 
     private static Map<String, Integer> getHeaderIndex(String[] headerSplitted) {
