@@ -17,13 +17,6 @@ import java.util.List;
 @RequestMapping("/medicalrecord")
 public class MedicalRecordSource {
 
-    /*
-    upload the data     ok
-    Fetch all data      ok
-    Fetch by code       ok
-    Delete all data     ok
-    */
-
     final MedicalRecordService medicalRecordService;
 
     public MedicalRecordSource(MedicalRecordService medicalRecordService) {
