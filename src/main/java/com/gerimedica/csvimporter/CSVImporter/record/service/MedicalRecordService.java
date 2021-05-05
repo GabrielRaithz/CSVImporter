@@ -27,17 +27,34 @@ public class MedicalRecordService {
         this.medicalRecordRepository = medicalRecordRepository;
     }
 
+    public MedicalRecord fetchByCode(Long code){
+        return this.medicalRecordRepository.getMedicalRecordByCode(code)
+                .orElseThrow(() -> new MedicalRecordNotFound("Medical record not found code: " + code));
+    }
+
+    public List<MedicalRecord> fetchAll(){
+        return this.medicalRecordRepository.findAll();
+    }
+
+    public void deleteAll(){
+        this.medicalRecordRepository.deleteAll();
+    }
+
     public ResponseMedicalRecordImport uploadData(MultipartFile file) throws IOException {
         if(!isTypeCSV(file)) throw new FileIsNotCsvException("Not CSV type file: " + file.getOriginalFilename());
-        ResponseMedicalRecordImport responseMedicalRecordImport =
-                createMedicalRecordForEachLine(file);
+        ResponseMedicalRecordImport responseMedicalRecordImport = this.createMedicalRecordForEachLine(file);
         this.medicalRecordRepository.saveAll(responseMedicalRecordImport.getImportedMedicalRecords());
         return responseMedicalRecordImport;
     }
 
     private ResponseMedicalRecordImport createMedicalRecordForEachLine(MultipartFile file) throws IOException {
-        ResponseMedicalRecordImport responseMedicalRecordImport = new ResponseMedicalRecordImport();
         ResponseCSVImport responseCSVImport = HelperCsv.readCSVFile(file);
+        ResponseMedicalRecordImport responseMedicalRecordImport = returnMedicalRecordOrFailedLine(responseCSVImport);
+        return responseMedicalRecordImport;
+    }
+
+    private ResponseMedicalRecordImport returnMedicalRecordOrFailedLine(ResponseCSVImport responseCSVImport) {
+        ResponseMedicalRecordImport responseMedicalRecordImport = new ResponseMedicalRecordImport();
         for (String[] line : responseCSVImport.getSplittedLines()) {
             try {
                 MedicalRecord medicalRecord = MedicalRecordFactory(responseCSVImport.getHeaderIndexes(), line);
@@ -57,19 +74,6 @@ public class MedicalRecordService {
             stringBuilder.append(" ");
         }
         return stringBuilder;
-    }
-
-    public MedicalRecord fetchByCode(Long code){
-        return this.medicalRecordRepository.getMedicalRecordByCode(code)
-                .orElseThrow(() -> new MedicalRecordNotFound("Medical record not found code: " + code));
-    }
-
-    public List<MedicalRecord> fetchAll(){
-        return this.medicalRecordRepository.findAll();
-    }
-
-    public void deleteAll(){
-        this.medicalRecordRepository.deleteAll();
     }
 
     private boolean isTypeCSV(MultipartFile file) {
