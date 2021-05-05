@@ -2,6 +2,7 @@ package com.gerimedica.csvimporter.CSVImporter.record.helper;
 
 import com.gerimedica.csvimporter.CSVImporter.record.exception.IncorrectHeaderException;
 import com.gerimedica.csvimporter.CSVImporter.record.model.MedicalRecord;
+import com.gerimedica.csvimporter.CSVImporter.record.response.ResponseCSVImport;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockMultipartFile;
 

@@ -50,15 +50,15 @@ public class MedicalRecord {
         this.sortingPriority = sortingPriority;
     }
 
-    public static MedicalRecord createMedicalRecord(Map<String, Integer> headerIndexes, String[] splittedLine) throws ParseException {
+    public static MedicalRecord MedicalRecordFactory(Map<String, Integer> headerIndexes, String[] splittedLine) throws ParseException {
         return new MedicalRecord(
                 Long.parseLong(splittedLine[headerIndexes.get("code")]),
                 splittedLine[headerIndexes.get("source")],
                 splittedLine[headerIndexes.get("codeListCode")],
                 splittedLine[headerIndexes.get("displayValue")],
                 splittedLine[headerIndexes.get("longDescription")],
-                DataHandler.getDate(splittedLine[headerIndexes.get("fromDate")]),
-                DataHandler.getDate(splittedLine[headerIndexes.get("toDate")]),
+                DataHandler.getDateFormatted(splittedLine[headerIndexes.get("fromDate")]),
+                DataHandler.getDateFormatted(splittedLine[headerIndexes.get("toDate")]),
                 DataHandler.integerParser(splittedLine[headerIndexes.get("sortingPriority")])
         );
     }

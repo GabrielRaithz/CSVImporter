@@ -1,6 +1,7 @@
 package com.gerimedica.csvimporter.CSVImporter.record.helper;
 
 import com.gerimedica.csvimporter.CSVImporter.record.exception.IncorrectHeaderException;
+import com.gerimedica.csvimporter.CSVImporter.record.response.ResponseCSVImport;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedReader;

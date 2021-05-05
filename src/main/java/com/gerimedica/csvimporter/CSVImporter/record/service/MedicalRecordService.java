@@ -3,7 +3,7 @@ package com.gerimedica.csvimporter.CSVImporter.record.service;
 import com.gerimedica.csvimporter.CSVImporter.record.exception.FileIsNotCsvException;
 import com.gerimedica.csvimporter.CSVImporter.record.exception.MedicalRecordNotFound;
 import com.gerimedica.csvimporter.CSVImporter.record.helper.HelperCsv;
-import com.gerimedica.csvimporter.CSVImporter.record.helper.ResponseCSVImport;
+import com.gerimedica.csvimporter.CSVImporter.record.response.ResponseCSVImport;
 import com.gerimedica.csvimporter.CSVImporter.record.message.ResponseMedicalRecordImport;
 import com.gerimedica.csvimporter.CSVImporter.record.model.MedicalRecord;
 import com.gerimedica.csvimporter.CSVImporter.record.repository.MedicalRecordRepository;
@@ -13,7 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
 
-import static com.gerimedica.csvimporter.CSVImporter.record.model.MedicalRecord.createMedicalRecord;
+import static com.gerimedica.csvimporter.CSVImporter.record.model.MedicalRecord.MedicalRecordFactory;
 import static java.util.Objects.requireNonNull;
 
 @Service
@@ -40,7 +40,7 @@ public class MedicalRecordService {
         ResponseCSVImport responseCSVImport = HelperCsv.readCSVFile(file);
         for (String[] line : responseCSVImport.getSplittedLines()) {
             try {
-                MedicalRecord medicalRecord = createMedicalRecord(responseCSVImport.getHeaderIndexes(), line);
+                MedicalRecord medicalRecord = MedicalRecordFactory(responseCSVImport.getHeaderIndexes(), line);
                 responseMedicalRecordImport.addImportedLine(medicalRecord);
             }catch (Exception ex){
                 responseMedicalRecordImport.addInvalidLine(line + "reason: " + ex.getMessage());

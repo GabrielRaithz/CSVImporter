@@ -1,7 +1,7 @@
 package com.gerimedica.csvimporter.CSVImporter.record.model;
 
 import com.gerimedica.csvimporter.CSVImporter.record.helper.HelperCsv;
-import com.gerimedica.csvimporter.CSVImporter.record.helper.ResponseCSVImport;
+import com.gerimedica.csvimporter.CSVImporter.record.response.ResponseCSVImport;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockMultipartFile;
 
@@ -24,7 +24,7 @@ class MedicalRecordModelTest {
 
         ResponseCSVImport responseCSVImport = HelperCsv.readCSVFile(mmf);
 
-        MedicalRecord medicalRecord = MedicalRecord.createMedicalRecord(responseCSVImport.getHeaderIndexes(),
+        MedicalRecord medicalRecord = MedicalRecord.MedicalRecordFactory(responseCSVImport.getHeaderIndexes(),
                 responseCSVImport.getSplittedLines().get(0));
         assertEquals("ZIB,ZIB001,11111,Polsslag regelmatig,test,24-04-0021,24-04-0021,1", medicalRecord.toString());
     }
@@ -41,7 +41,7 @@ class MedicalRecordModelTest {
 
         assertThrows(
                 NumberFormatException.class,
-                () -> MedicalRecord.createMedicalRecord(
+                () -> MedicalRecord.MedicalRecordFactory(
                         responseCSVImport.getHeaderIndexes(), responseCSVImport.getSplittedLines().get(0)));
     }
 

@@ -1,4 +1,4 @@
-package com.gerimedica.csvimporter.CSVImporter.record.helper;
+package com.gerimedica.csvimporter.CSVImporter.record.response;
 
 import java.util.List;
 import java.util.Map;

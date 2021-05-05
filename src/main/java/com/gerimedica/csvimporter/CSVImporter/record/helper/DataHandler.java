@@ -15,7 +15,7 @@ public class DataHandler {
         }
     }
 
-    public static Date getDate(String dateParam) throws ParseException {
+    public static Date getDateFormatted(String dateParam) throws ParseException {
         DateFormat formatNR = new SimpleDateFormat("dd-MM-yyyy");
         if(dateParam.equals("")) return null;
         return formatNR.parse(dateParam);
