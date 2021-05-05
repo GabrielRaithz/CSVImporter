@@ -43,10 +43,20 @@ public class MedicalRecordService {
                 MedicalRecord medicalRecord = MedicalRecordFactory(responseCSVImport.getHeaderIndexes(), line);
                 responseMedicalRecordImport.addImportedLine(medicalRecord);
             }catch (Exception ex){
-                responseMedicalRecordImport.addInvalidLine(line + "reason: " + ex.getMessage());
+                StringBuilder stringBuilder = getConcatenateItensInTheLine(line);
+                responseMedicalRecordImport.addInvalidLine( stringBuilder + "reason: " + ex.getMessage());
             }
         }
         return responseMedicalRecordImport;
+    }
+
+    private StringBuilder getConcatenateItensInTheLine(String[] line) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (String lineItem : line) {
+            stringBuilder.append(lineItem);
+            stringBuilder.append(" ");
+        }
+        return stringBuilder;
     }
 
     public MedicalRecord fetchByCode(Long code){

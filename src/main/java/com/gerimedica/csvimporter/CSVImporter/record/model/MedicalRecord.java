@@ -36,6 +36,9 @@ public class MedicalRecord {
     @Nullable
     private Integer sortingPriority;
 
+    public MedicalRecord() {
+    }
+
     public MedicalRecord(Long code, String source, String codeListCode, String displayValue, String longDescription, Date fromDate, Date toDate, Integer sortingPriority) {
         this.code = code;
         this.source = source;
@@ -58,6 +61,70 @@ public class MedicalRecord {
                 DataHandler.getDateFormatted(splittedLine[headerIndexes.get("toDate")]),
                 DataHandler.integerParser(splittedLine[headerIndexes.get("sortingPriority")])
         );
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
+    }
+
+    public String getCodeListCode() {
+        return codeListCode;
+    }
+
+    public void setCodeListCode(String codeListCode) {
+        this.codeListCode = codeListCode;
+    }
+
+    public Long getCode() {
+        return code;
+    }
+
+    public void setCode(Long code) {
+        this.code = code;
+    }
+
+    public String getDisplayValue() {
+        return displayValue;
+    }
+
+    public void setDisplayValue(String displayValue) {
+        this.displayValue = displayValue;
+    }
+
+    public String getLongDescription() {
+        return longDescription;
+    }
+
+    public void setLongDescription(String longDescription) {
+        this.longDescription = longDescription;
+    }
+
+    public Date getFromDate() {
+        return fromDate;
+    }
+
+    public void setFromDate(Date fromDate) {
+        this.fromDate = fromDate;
+    }
+
+    public Date getToDate() {
+        return toDate;
+    }
+
+    public void setToDate(Date toDate) {
+        this.toDate = toDate;
+    }
+
+    public Integer getSortingPriority() {
+        return sortingPriority;
+    }
+
+    public void setSortingPriority(Integer sortingPriority) {
+        this.sortingPriority = sortingPriority;
     }
 
     @Override
