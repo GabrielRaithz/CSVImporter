@@ -11,18 +11,17 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class HelperCsv {
-    private static final String[] headerToBeCompared = {"source", "codeListCode", "code", "displayValue", "longDescription", "fromDate", "toDate", "sortingPriority"};
 
-    public static ResponseCSVImport readCSVFile(MultipartFile file) throws IOException {
+    public static ResponseCSVImport readCSVFile(MultipartFile file, String[] headerToBeCompared) throws IOException {
         ResponseCSVImport responseCSVImport = new ResponseCSVImport();
         InputStreamReader inputStreamReader = new InputStreamReader(file.getInputStream(), StandardCharsets.UTF_8);
         BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
 
         String[] headerSplitted = bufferedReader.readLine().split(",", headerToBeCompared.length);
-        checkHeader(Arrays.asList(headerSplitted));
+        checkHeader(Arrays.asList(headerSplitted), headerToBeCompared);
 
-        responseCSVImport.setHeaderIndexes(getHeaderIndex(headerSplitted));
-        responseCSVImport.setSplittedLines(getLinesSplitted(bufferedReader));
+        responseCSVImport.setHeaderIndexes(getHeaderIndex(headerSplitted, headerToBeCompared));
+        responseCSVImport.setSplittedLines(getLinesSplitted(bufferedReader, headerToBeCompared));
 
         inputStreamReader.close();
         bufferedReader.close();
@@ -30,7 +29,7 @@ public class HelperCsv {
         return responseCSVImport;
     }
 
-    private static List<String[]> getLinesSplitted(BufferedReader bufferedReader) throws IOException {
+    private static List<String[]> getLinesSplitted(BufferedReader bufferedReader, String[] headerToBeCompared) throws IOException {
         List<String[]> splittedLines = new ArrayList<>();
         String line = bufferedReader.readLine();
         while (line != null){
@@ -40,7 +39,7 @@ public class HelperCsv {
         return splittedLines;
     }
 
-    private static Map<String, Integer> getHeaderIndex(String[] headerSplitted) {
+    private static Map<String, Integer> getHeaderIndex(String[] headerSplitted, String[] headerToBeCompared) {
         Map<String, Integer> headerIndex = new HashMap<>();
         for (int i = 0; i < headerSplitted.length; i++){
             headerIndex.put(headerSplitted[i], i);
@@ -48,7 +47,7 @@ public class HelperCsv {
         return headerIndex;
     }
 
-    private static void checkHeader(List<String> header){
+    private static void checkHeader(List<String> header, String[] headerToBeCompared){
         List<String> headerAsList = Arrays.asList(headerToBeCompared);
         if(!header.containsAll(headerAsList)) {
             throw new IncorrectHeaderException(header, headerAsList);

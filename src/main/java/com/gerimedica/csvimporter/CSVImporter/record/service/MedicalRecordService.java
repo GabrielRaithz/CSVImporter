@@ -48,7 +48,7 @@ public class MedicalRecordService {
     }
 
     private ResponseMedicalRecordImport createMedicalRecordForEachLine(MultipartFile file) throws IOException {
-        ResponseCSVImport responseCSVImport = HelperCsv.readCSVFile(file);
+        ResponseCSVImport responseCSVImport = HelperCsv.readCSVFile(file, headerToBeCompared);
         ResponseMedicalRecordImport responseMedicalRecordImport = returnMedicalRecordOrFailedLine(responseCSVImport);
         return responseMedicalRecordImport;
     }

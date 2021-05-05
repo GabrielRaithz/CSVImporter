@@ -14,15 +14,18 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class MedicalRecordModelTest {
 
+    private final String[] headerToBeCompared = {"source", "codeListCode", "code", "displayValue", "longDescription", "fromDate", "toDate", "sortingPriority"};
+
     @Test
     void createRecordUsingStaticConstructor() throws IOException, ParseException {
+
         String fileMock = "source,codeListCode,code,displayValue,longDescription,fromDate,toDate,sortingPriority"
                 +System.getProperty("line.separator")
                 +"ZIB,ZIB001,11111,Polsslag regelmatig,test,24-04-21,24-04-21,1";
         MockMultipartFile mmf = new MockMultipartFile("file", "test-file.csv",
                 "text/csv", (fileMock).getBytes());
 
-        ResponseCSVImport responseCSVImport = HelperCsv.readCSVFile(mmf);
+        ResponseCSVImport responseCSVImport = HelperCsv.readCSVFile(mmf, headerToBeCompared);
 
         MedicalRecord medicalRecord = MedicalRecord.MedicalRecordFactory(responseCSVImport.getHeaderIndexes(),
                 responseCSVImport.getSplittedLines().get(0));
@@ -37,7 +40,7 @@ class MedicalRecordModelTest {
         MockMultipartFile mmf = new MockMultipartFile("file", "test-file.csv",
                 "text/csv", (fileMock).getBytes());
 
-        ResponseCSVImport responseCSVImport = HelperCsv.readCSVFile(mmf);
+        ResponseCSVImport responseCSVImport = HelperCsv.readCSVFile(mmf, headerToBeCompared);
 
         assertThrows(
                 NumberFormatException.class,

@@ -15,8 +15,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class HelperCsvTest {
 
+    private final String[] headerToBeCompared = {"source", "codeListCode", "code", "displayValue", "longDescription", "fromDate", "toDate", "sortingPriority"};
+
     @Test
-    void happyDay() throws IOException, ParseException {
+    void happyDay() throws IOException {
         MedicalRecord medicalRecord = new MedicalRecord(
                 271636001L, "ZIB", "ZIB001", "Polsslag regelmatig", "test", new Date(),new Date(),1);
 
@@ -26,7 +28,7 @@ class HelperCsvTest {
         MockMultipartFile mmf = new MockMultipartFile("file", "test-file.csv",
                 "text/csv", (fileMock).getBytes());
 
-        ResponseCSVImport responseCSVImport = HelperCsv.readCSVFile(mmf);
+        ResponseCSVImport responseCSVImport = HelperCsv.readCSVFile(mmf, headerToBeCompared);
         assertTrue(responseCSVImport.getSplittedLines().size() > 0);
     }
 
@@ -40,7 +42,7 @@ class HelperCsvTest {
 
         assertThrows(
                 IncorrectHeaderException.class,
-                () -> HelperCsv.readCSVFile(mmf));
+                () -> HelperCsv.readCSVFile(mmf, headerToBeCompared));
     }
 
 }
