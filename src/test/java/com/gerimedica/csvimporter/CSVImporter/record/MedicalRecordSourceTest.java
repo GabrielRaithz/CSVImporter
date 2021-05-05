@@ -14,9 +14,9 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.multipart.MultipartFile;
-
 import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
@@ -30,7 +30,7 @@ class MedicalRecordSourceTest {
     @MockBean
     private MedicalRecordService medicalRecordService;
 
-    @MockBean
+    @Autowired
     private MedicalRecordSource medicalRecordSource;
 
     @AfterEach
@@ -52,24 +52,28 @@ class MedicalRecordSourceTest {
                 "text/csv", (fileMock).getBytes());
 
         this.mockMvc.perform(multipart("/medicalrecord/csv/import").file(mmf))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(content().json("{\"importedMedicalRecords\":[],\"invalidLines\":[\"test\"]}"));
     }
 
     @Test
     void getAll() throws Exception {
-        this.mockMvc.perform(get("/medicalrecord")).andExpect(
-                status().isOk());
+        this.mockMvc.perform(get("/medicalrecord"))
+                .andExpect(status().isOk())
+                .andExpect(content().string("[]"));
     }
 
     @Test
     void deleteAll() throws Exception {
-        this.mockMvc.perform(delete("/medicalrecord")).andExpect(
-                status().isOk());
+        this.mockMvc.perform(delete("/medicalrecord"))
+                .andExpect(status().isOk())
+                .andExpect(content().json("{\"message\":\"All medical records deleted\"}"));
     }
 
     @Test
     void findByCode() throws Exception {
         this.mockMvc.perform(get("/medicalrecord/1"))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(content().string(""));
     }
 }

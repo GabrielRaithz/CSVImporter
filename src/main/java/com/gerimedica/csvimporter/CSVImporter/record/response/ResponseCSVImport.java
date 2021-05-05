@@ -11,11 +11,6 @@ public class ResponseCSVImport {
     public ResponseCSVImport() {
     }
 
-    public ResponseCSVImport(Map<String, Integer> headerIndexes, List<String[]> splittedLines) {
-        this.headerIndexes = headerIndexes;
-        this.splittedLines = splittedLines;
-    }
-
     public Map<String, Integer> getHeaderIndexes() {
         return headerIndexes;
     }
